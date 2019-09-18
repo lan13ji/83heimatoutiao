@@ -47,9 +47,9 @@ export default {
       /* if (value) {
         callBack()
       } else {
-        callBack(new Error('请您同意协议'))
+        callBack(new Error('请您确认用户协议和隐私条款'))
       } */
-      value ? callBack() : callBack(new Error('请您同意协议和条款'))
+      value ? callBack() : callBack(new Error('请您阅读用户协议和隐私条款'))
     }
     return {
       // 表单数据 是一个对象
@@ -102,7 +102,7 @@ export default {
           }).catch(() => {
             // console.log(error.message)
             this.$message({
-              message: '手机号或者验证码出错',
+              message: '请您确认手机号或者验证码',
               type: 'warning'
             })
           })

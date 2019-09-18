@@ -9,8 +9,8 @@
       <!-- 表单，用el-form包裹 -->
       <!-- 数据校验 先绑定 model属性,rules规则 -->
       <el-form :model="loginForm" :rules="loginRules" ref="myForm" style="margin-top:20px">
-          <!-- 每一个表单域由一个 Form-item 组件构成 -->
-          <!-- form-item prop属性绑定 表单组件的 校验字段名 -->
+        <!-- 每一个表单域由一个 Form-item 组件构成 -->
+        <!-- form-item prop属性绑定 表单组件的 校验字段名 -->
         <el-form-item prop="mobile">
           <!-- 表单域中可以放置各种类型的表单控件，包括Input、Select、Checkbox -->
           <!-- 手机号 绑定 v-model -->
@@ -45,10 +45,10 @@ export default {
       // value当前表单项的值
       // callBack当前回调函数
       /* if (value) {
-        callBack()
-      } else {
-        callBack(new Error('请您确认用户协议和隐私条款'))
-      } */
+                callBack()
+              } else {
+                callBack(new Error('请您确认用户协议和隐私条款'))
+              } */
       value ? callBack() : callBack(new Error('请您阅读用户协议和隐私条款'))
     }
     return {
@@ -66,7 +66,8 @@ export default {
             required: true, // true 表示该字段必填，如果没有内容，就会提示消息
             message: '请输入您的手机号'
           },
-          { pattern: /^1[3456789]\d{9}$/,
+          {
+            pattern: /^1[3456789]\d{9}$/,
             message: '请输入正确的手机号'
           }
         ],
@@ -74,12 +75,17 @@ export default {
           {
             required: true,
             message: '请输入您的验证码'
-          }, {
+          },
+          {
             pattern: /^\d{6}$/,
             message: '验证码位6位数字'
           }
         ],
-        agree: [{ validator }]
+        agree: [
+          {
+            validator
+          }
+        ]
       }
     }
   },
@@ -87,25 +93,27 @@ export default {
     login () {
       // 校验整个表单规则
       // validate 是一个方法，传入的是一个回调函数，函数中有两个参数，分别是是否校验成功/未校验成功的字段
-      this.$refs.myForm.validate((isOk) => {
+      this.$refs.myForm.validate(isOk => {
         if (isOk) {
           // 只有一切的校验通过之后，才会发送请求
           this.$axios({
             method: 'post',
             url: '/authorizations',
             data: this.loginForm
-          }).then(result => {
-            // 将返回的token令牌，存储到前端缓存中
-            // console.log(result)
-            window.localStorage.setItem('user-token', result.data.data.token)
-            this.$router.push('/home')
-          }).catch(() => {
-            // console.log(error.message)
-            this.$message({
-              message: '请您确认手机号或者验证码',
-              type: 'warning'
-            })
           })
+            .then(result => {
+              // 将返回的token令牌，存储到前端缓存中
+              // console.log(result)
+              window.localStorage.setItem('user-token', result.data.data.token)
+              this.$router.push('/home')
+            })
+            .catch(() => {
+              // console.log(error.message)
+              this.$message({
+                message: '请您确认手机号或者验证码',
+                type: 'warning'
+              })
+            })
         }
       })
     }
@@ -123,14 +131,17 @@ export default {
   align-items: center;
   background-image: url("../../assets/img/login_bg.jpg");
   background-size: cover;
+
   .login-card {
     width: 440px;
     height: 340px;
+
     .title {
-        text-align: center;
-        img {
-            height: 45px;
-        }
+      text-align: center;
+
+      img {
+        height: 45px;
+      }
     }
   }
 }

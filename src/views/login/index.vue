@@ -44,11 +44,12 @@ export default {
       // rule当前规则
       // value当前表单项的值
       // callBack当前回调函数
-      if (value) {
+      /* if (value) {
         callBack()
       } else {
         callBack(new Error('请您同意协议'))
-      }
+      } */
+      value ? callBack() : callBack(new Error('请您同意协议和条款'))
     }
     return {
       // 表单数据 是一个对象
@@ -86,9 +87,25 @@ export default {
     login () {
       // 校验整个表单规则
       // validate 是一个方法，传入的是一个回调函数，函数中有两个参数，分别是是否校验成功/未校验成功的字段
-      this.$refs.myForm.validate(isOk => {
+      this.$refs.myForm.validate((isOk) => {
         if (isOk) {
-          console.log('校验成功')
+          // 只有一切的校验通过之后，才会发送请求
+          this.$axios({
+            method: 'post',
+            url: '/authorizations',
+            data: this.loginForm
+          }).then(result => {
+            // 将返回的token令牌，存储到前端缓存中
+            // console.log(result)
+            window.localStorage.setItem('user-token', result.data.data.token)
+            this.$router.push('/home')
+          }).catch(() => {
+            // console.log(error.message)
+            this.$message({
+              message: '手机号或者验证码出错',
+              type: 'warning'
+            })
+          })
         }
       })
     }

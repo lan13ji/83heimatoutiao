@@ -10,16 +10,17 @@
     <el-col :span="4">
       <img class="head-img" :src="userInfo.photo ? userInfo.photo : defaultImg" alt="">
       <!-- 下拉菜单组件 -->
-      <el-dropdown trigger="click">
+      <el-dropdown trigger="click" @command="commonClick">
         <!-- 匿名插槽 -->
         <span class="el-dropdown-link drop-menu">
           {{userInfo.name}} <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <!-- 具名插槽 -->
         <el-dropdown-menu solt="dropdown">
-          <el-dropdown-item>个人信息</el-dropdown-item>
-          <el-dropdown-item>Git地址</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <!-- command属性会在触发点击时，携带给command事件的方法 -->
+          <el-dropdown-item command="account">个人信息</el-dropdown-item>
+          <el-dropdown-item command="git">Git地址</el-dropdown-item>
+          <el-dropdown-item command="logout">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-col>
@@ -47,8 +48,16 @@ export default {
         this.userInfo = result.data.data
       })
     },
-    created () {
-      this.getUserInfo()
+    commonClick (key) {
+      if (key === 'account') {
+        this.$router.push('/home/account')
+      } else if (key === 'git') {
+        window.location.href = 'https://github.com/lan13ji/83heimatoutiao'
+      } else {
+        // 只能清楚本项目的所有前端缓存
+        window.localStorage.clear()
+        this.$router.push('/login')
+      }
     }
   }
 }

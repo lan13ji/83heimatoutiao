@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './permission'
+import axios from './utils/axios.config'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css' // 引入样式
@@ -9,14 +10,14 @@ import 'element-ui/lib/theme-chalk/index.css' // 引入样式
 import Component from './components/index'
 import './styles/index.less'
 
-import axios from 'axios'
-axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
+// 第一种方法，第二种不需要此行
 Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.use(Component)
+Vue.use(axios)
 
 new Vue({
   router,

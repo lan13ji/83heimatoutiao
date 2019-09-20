@@ -45,10 +45,10 @@ export default {
       // value当前表单项的值
       // callBack当前回调函数
       /* if (value) {
-                callBack()
-              } else {
-                callBack(new Error('请您确认用户协议和隐私条款'))
-              } */
+                        callBack()
+                      } else {
+                        callBack(new Error('请您确认用户协议和隐私条款'))
+                      } */
       value ? callBack() : callBack(new Error('请您阅读用户协议和隐私条款'))
     }
     return {
@@ -61,31 +61,27 @@ export default {
       // 登录规则集合对象
       loginRules: {
         // 决定校验规则， key(字段名):value(对象数组)，一个对象就是一个校验规则
-        mobile: [
-          {
-            required: true, // true 表示该字段必填，如果没有内容，就会提示消息
-            message: '请输入您的手机号'
-          },
-          {
-            pattern: /^1[3456789]\d{9}$/,
-            message: '请输入正确的手机号'
-          }
+        mobile: [{
+          required: true, // true 表示该字段必填，如果没有内容，就会提示消息
+          message: '请输入您的手机号'
+        },
+        {
+          pattern: /^1[3456789]\d{9}$/,
+          message: '请输入正确的手机号'
+        }
         ],
-        code: [
-          {
-            required: true,
-            message: '请输入您的验证码'
-          },
-          {
-            pattern: /^\d{6}$/,
-            message: '验证码位6位数字'
-          }
+        code: [{
+          required: true,
+          message: '请输入您的验证码'
+        },
+        {
+          pattern: /^\d{6}$/,
+          message: '验证码位6位数字'
+        }
         ],
-        agree: [
-          {
-            validator
-          }
-        ]
+        agree: [{
+          validator
+        }]
       }
     }
   },
@@ -104,45 +100,47 @@ export default {
             .then(result => {
               // 将返回的token令牌，存储到前端缓存中
               // console.log(result)
-              window.localStorage.setItem('user-token', result.data.data.token)
+              window.localStorage.setItem('user-token', result.data.token)
               this.$router.push('/home')
             })
-            .catch(() => {
+            /* .catch(() => {
               // console.log(error.message)
               this.$message({
                 message: '请您确认手机号或者验证码',
                 type: 'warning'
               })
-            })
+            }) */
         }
       })
     }
   }
 }
+
 </script>
 
 <style lang="less" scoped>
-/* 如果要在组件样式中写less, 就要给一个lang属性 lang='less'
+  /* 如果要在组件样式中写less, 就要给一个lang属性 lang='less'
  如果加了scoped属性 name该style就会只对当前组件有效*/
-.login {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-image: url("../../assets/img/login_bg.jpg");
-  background-size: cover;
+  .login {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../../assets/img/login_bg.jpg");
+    background-size: cover;
 
-  .login-card {
-    width: 440px;
-    height: 340px;
+    .login-card {
+      width: 440px;
+      height: 340px;
 
-    .title {
-      text-align: center;
+      .title {
+        text-align: center;
 
-      img {
-        height: 45px;
+        img {
+          height: 45px;
+        }
       }
     }
   }
-}
+
 </style>

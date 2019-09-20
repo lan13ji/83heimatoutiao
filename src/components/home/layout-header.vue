@@ -8,12 +8,12 @@
     </el-col>
     <!-- 右侧 -->
     <el-col :span="4">
-      <img class="head-img" src="../../assets/img/avatar.jpg" alt="">
+      <img class="head-img" :src="userInfo.photo ? userInfo.photo : defaultImg" alt="">
       <!-- 下拉菜单组件 -->
       <el-dropdown trigger="click">
         <!-- 匿名插槽 -->
         <span class="el-dropdown-link drop-menu">
-          下拉菜单 <i class="el-icon-arrow-down el-icon--right"></i>
+          {{userInfo.name}} <i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <!-- 具名插槽 -->
         <el-dropdown-menu solt="dropdown">
@@ -28,7 +28,29 @@
 
 <script>
 export default {
-
+  data () {
+    return {
+      userInfo: {},
+      defaultImg: require('../../assets/img/avatar.jpg')
+    }
+  },
+  methods: {
+    getUserInfo () {
+      let token = window.localStorage.getItem('user-token')
+      this.$axios({
+        url: '/user/profile',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }).then(result => {
+        // 接收数据对象
+        this.userInfo = result.data.data
+      })
+    },
+    created () {
+      this.getUserInfo()
+    }
+  }
 }
 
 </script>

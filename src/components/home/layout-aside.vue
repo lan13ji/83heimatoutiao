@@ -7,7 +7,7 @@
     <!-- :router='true' === router -->
     <el-menu router class="el-menu-vertical-demo layout-menu" background-color="#353b4e" text-color="#adafb5"
       active-text-color="#ffd04b">
-      <el-menu-item index="0">
+      <el-menu-item index="/home">
         <!-- 图标 -->
         <i class="el-icon-s-home"></i>
         <span slot="title">首页</span>

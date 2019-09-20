@@ -2,13 +2,15 @@
   <!-- 先定义一个大容器 -->
   <el-container>
     <!-- 先放置一个左侧 -->
-    <el-aside>
+    <el-aside style="width:200px">
       <layout-aside></layout-aside>
     </el-aside>
     <!-- 右侧大容器 -->
     <el-container>
       <!-- 头部 -->
-      <el-header></el-header>
+      <el-header>
+        <layout-heade></layout-heade>
+      </el-header>
       <!-- 中部区域 -->
       <el-main>
         <!-- 二级路由容器 -->
@@ -19,11 +21,7 @@
 </template>
 
 <script>
-import layoutAside from '../../components/home/layout-aside'
 export default {
-  components: {
-    'layout-aside': layoutAside
-  }
 
 }
 

@@ -7,8 +7,12 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 
 import router from '../permission'
+import jsonBig from 'json-bigint'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
-
+axios.defaults.transformResponse = [function (data) {
+  // jsonBig 转换方法 使得 计算更精确
+  return jsonBig.parse(data)
+}]
 // 请求拦截
 axios.interceptors.request.use(function (config) {
   // 在发起请求是做一些业务处理

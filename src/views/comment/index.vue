@@ -20,7 +20,7 @@
         <!-- 作用域插槽 接收 eletalbe-column 组件的 row/column/$index/store -->
         <template slot-scope="editScope">
           <el-button type="text" size="small">修改</el-button>
-          <el-button type="text" size="small" @click="closeComment(editScope.row)">
+          <el-button type="text" size="small" :style="{color : editScope.row.comment_status ? '#909399' : '#409EFF'}" @click="closeComment(editScope.row)">
             {{
             editScope.row.comment_status ? "关闭评论" : "打开评论"
             }}
@@ -63,7 +63,7 @@ export default {
         this.$axios({
           url: 'comments/status',
           method: 'put',
-          params: { article_id: row.id },
+          params: { article_id: row.id.toString() },
           data: {
             allow_comment: !row.comment_status
           }

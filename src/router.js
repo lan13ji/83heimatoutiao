@@ -21,6 +21,10 @@ export default new Router({
       // 评论列表路由
       path: 'comment',
       component: () => import('./views/comment')
+    }, {
+      // 评论列表路由
+      path: 'material',
+      component: () => import('./views/material')
     }]
   },
   {

@@ -31,7 +31,6 @@ axios.interceptors.response.use(function (response) {
   // 对响应数据做处理 执行成功是进入
   return response.data ? response.data : {}
 }, function (error) {
-  debugger
   let status = error.response.status
   let message = '未知错误'
   switch (status) {

@@ -4,9 +4,7 @@ import axios from 'axios'
 /* 原来的this指向vue实例 */
 
 //
-import {
-  Message
-} from 'element-ui'
+import { Message } from 'element-ui'
 
 import router from '../permission'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
@@ -50,10 +48,8 @@ axios.interceptors.response.use(function (response) {
       break
   }
   // 希望在异常处理函数中将所有的错误都处理完毕，不再进入catch 终止错误
-  Message({
-    message
-  })
-  return new Promise(function () {}) // 终止进入catch
+  Message({ message })
+  return new Promise(function () { }) // 终止进入catch
 })
 export default axios
 // 第二种方法

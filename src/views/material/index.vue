@@ -3,19 +3,34 @@
     <bread-crumb slot="header">
       <template slot="title">素材管理</template>
     </bread-crumb>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-upload :http-request="uploadImg" :show-file-list="false" action="" class="toRight">
+      <el-button type="primary">我太难了</el-button>
+    </el-upload>
+    <el-tabs v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="全部素材" name="all">
         <div class="img-list">
           <el-card v-for="item in list" :key="item.id" class="img-item">
             <img :src="item.url" alt="">
             <div class="operate">
-              <i class="el-icon-star-on"></i>
+              <i class="el-icon-star-on" :style='{color: item.is_collected ? "#F56C6C" : "#303133" }'></i>
               <i class="el-icon-delete-solid"></i>
             </div>
           </el-card>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="收藏素材" name="collect">收藏素材</el-tab-pane>
+      <el-tab-pane label=" 收藏素材" name="collect">
+        <div class="img-list">
+          <el-card v-for="item in list" :key="item.id" class="img-item">
+            <img :src="item.url" alt="">
+          </el-card>
+        </div>
+      </el-tab-pane>
+      <!-- 分页页面结构 -->
+      <el-row type="flex" justify="center" style="margin: 20px 0">
+        <el-pagination background layout="prev, pager, next" :page-size="page.pageSize" :total="page.total"
+          :current-page="page.currentPage" @current-change="changePage">
+        </el-pagination>
+      </el-row>
     </el-tabs>
   </el-card>
 </template>
@@ -25,21 +40,52 @@ export default {
   data () {
     return {
       activeName: 'all',
-      list: []
+      list: [],
+      page: {
+        total: 0,
+        currentPage: 1,
+        pageSize: 10
+      }
     }
   },
   methods: {
-    handleClick (tab, event) {
-      //   console.log(tab, event)
-    },
-    getMaterial () {
+    uploadImg (params) {
+      const data = new FormData() // 声明一个新的表单
+      data.append('image', params.file)
       this.$axios({
         url: '/user/images',
+        method: 'post',
+        data
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          duration: 1500,
+          message: '上传成功'
+        })
+        this.getMaterial()
+      })
+    },
+    changePage (n) {
+      this.page.currentPage = n
+      this.getMaterial()
+    },
+    changeTab () {
+      this.page.currentPage = 1
+      this.getMaterial()
+    },
+    getMaterial (collect) {
+      this.$axios({
+        url: '/user/images',
+        // this.activeName === 'collect' 相当于去找收藏的数据
+        // 如果不等于collect 相等于去找全部数据
         params: {
-          collect: false
+          collect: this.activeName === 'collect',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
         }
       }).then(result => {
         this.list = result.data.results
+        this.page.total = result.data.total_count
       })
     }
   },
@@ -51,14 +97,20 @@ export default {
 </script>
 
 <style lang="less" scoped>
+  .toRight {
+    position: absolute;
+    right: 10px;
+    margin-top: -10px;
+    z-index: 1;
+  }
+
   .img-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
 
     .img-item {
-      width: 180px;
-      height: 180px;
+      width: 160px;
+      height: 160px;
       margin: 30px;
       position: relative;
       border-radius: 6px;

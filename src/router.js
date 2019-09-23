@@ -29,6 +29,10 @@ export default new Router({
       // 素材管理路由
       path: 'material',
       component: () => import('./views/material')
+    }, {
+      // 素材管理路由
+      path: 'publish',
+      component: () => import('./views/publish')
     }]
   },
   {

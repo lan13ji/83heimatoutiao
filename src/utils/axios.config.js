@@ -4,14 +4,16 @@ import axios from 'axios'
 /* 原来的this指向vue实例 */
 
 //
-import { Message } from 'element-ui'
+import {
+  Message
+} from 'element-ui'
 
 import router from '../permission'
 import jsonBig from 'json-bigint'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0/'
 axios.defaults.transformResponse = [function (data) {
   // jsonBig 转换方法 使得 计算更精确
-  return jsonBig.parse(data)
+  return data ? jsonBig.parse(data) : data
 }]
 // 请求拦截
 axios.interceptors.request.use(function (config) {
@@ -51,8 +53,10 @@ axios.interceptors.response.use(function (response) {
       break
   }
   // 希望在异常处理函数中将所有的错误都处理完毕，不再进入catch 终止错误
-  Message({ message })
-  return new Promise(function () { }) // 终止进入catch
+  Message({
+    message
+  })
+  return new Promise(function () {}) // 终止进入catch
 })
 export default axios
 // 第二种方法

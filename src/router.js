@@ -18,11 +18,15 @@ export default new Router({
       path: '/',
       component: Main
     }, {
+      // 内容列表路由
+      path: 'articles',
+      component: () => import('./views/articles')
+    }, {
       // 评论列表路由
       path: 'comment',
       component: () => import('./views/comment')
     }, {
-      // 评论列表路由
+      // 素材管理路由
       path: 'material',
       component: () => import('./views/material')
     }]

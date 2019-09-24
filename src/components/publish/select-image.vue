@@ -17,7 +17,12 @@
             @current-change="changePage"></el-pagination>
       </el-row>
     </el-tab-pane>
-    <el-tab-pane label="上传图片"></el-tab-pane>
+    <el-tab-pane label="上传图片">
+        <el-upload class="avatar-uploader" :show-file-list="false" action="">
+            <i class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+
+    </el-tab-pane>
   </el-tabs>
 </template>
 
@@ -34,6 +39,17 @@ export default {
     }
   },
   methods: {
+    uploadImg (params) {
+      let data = new FormData()
+      data.append('image', params.file)
+      this.$axios({
+        url: '/user/images',
+        method: 'POST',
+        data
+      }).then(result => {
+        this.$emit('selectOne', result.data.url)
+      })
+    },
     clickImg (item) {
       this.$emit('selectOne', item.url)
     },
@@ -62,6 +78,26 @@ export default {
 </script>
 
 <style lang="less" scoped>
+    .avatar-uploader{
+        width:178px;
+        position: relative;
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        overflow: hidden;
+
+        &:hover{
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+            font-size: 28px;
+            color: #8c939d;
+        }
+    }
     .imgs-list{
         display:flex;
         flex-wrap:wrap;

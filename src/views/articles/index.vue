@@ -49,7 +49,7 @@
             <p class="date">{{item.pubdate}}</p>
           </div>
           <p class="right">
-            <span><i class="el-icon-edit">修改</i></span>
+            <span><i class="el-icon-edit" @click="goEdit(item.id)">修改</i></span>
             <span><i class="el-icon-delete" @click="delArticle(item.id)">删除</i></span>
           </p>
       </div>
@@ -87,6 +87,9 @@ export default {
     }
   },
   methods: {
+    goEdit (id) {
+      this.$router.push(`/home/publish/${id.toString()}`)
+    },
     delArticle (id) {
       // console.log(id.toString())
       this.$confirm('您确定删除该文章吗？').then(() => {

@@ -30,8 +30,12 @@ export default new Router({
       path: 'material',
       component: () => import('./views/material')
     }, {
-      // 素材管理路由
+      // 发布文章路由
       path: 'publish',
+      component: () => import('./views/publish')
+    }, {
+      //  修改文章路由
+      path: 'publish/:articleId',
       component: () => import('./views/publish')
     }]
   },

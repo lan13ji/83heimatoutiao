@@ -1,7 +1,7 @@
 <template>
   <div class="coverUpload">
-    <div class="coverItem" v-for="(item,index) in images" :key="index">
-      <img :src="item ? item : deafultImg" alt @click="openLayer(index)" />
+    <div class="coverItem" v-for="(item,index) in images"  @click="openLayer(index)" :key="index">
+      <img :src="item ? item : deafultImg" alt />
     </div>
     <!-- 弹层组件 -->
     <el-dialog :visible="dialogVisible" @close="dialogVisible=false">
@@ -25,7 +25,7 @@ export default {
       this.selectIndex = index // 将当前点击的图片索引值传给data中的一个值
     },
     receiveImg (url) {
-      this.$emit('selectImg', url, this.selectIndex)
+      this.$emit('selectOne', url, this.selectIndex)
       this.dialogVisible = false
     }
   },

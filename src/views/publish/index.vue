@@ -25,7 +25,7 @@
           <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
         <!-- 封面插件 -->
-        <cover-image @selectImg="changeImg" :images="formData.cover.images"></cover-image>
+        <cover-image @selectOne="receiveImg" :images="formData.cover.images"></cover-image>
       </el-form-item>
       <el-form-item label="频道" placeholder="请选择" prop="channel_id">
         <el-select v-model="formData.channel_id">
@@ -91,14 +91,17 @@ export default {
           break
       }
     },
-    changeImg (url, index) {
+    // 接收子组件传过来的数据
+    receiveImg (url, index) {
       /* this.formData.cover.images = this.formData.cover.images.map((item, i) => {
         if (index === i) {
           return url
         }
         return item
       }) */
-      this.formData.cover.images = this.formData.cover.images.map((item, i) => index === i ? url : item)
+      this.formData.cover.images = this.formData.cover.images.map((item, i) =>
+        index === i ? url : item
+      )
     },
     getChannels () {
       this.$axios({

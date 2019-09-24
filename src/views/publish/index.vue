@@ -7,8 +7,8 @@
             <el-form-item label="标题" prop="title">
                 <el-input class="article-title" v-model="formData.title"></el-input>
             </el-form-item>
-            <el-form-item label="内容" prop="content">
-                <el-input type="textarea" v-model="formData.content" :row="5" placeholder="请输入内容"></el-input>
+            <el-form-item label="内容" prop="content" style="height:300px">
+                <quill-editor v-model="formData.content" style="height:200px"></quill-editor>
             </el-form-item>
             <el-form-item label="封面" prop="cover">
                 <el-radio-group v-model="formData.cover.type">

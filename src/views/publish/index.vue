@@ -1,36 +1,43 @@
+/* eslint-disable semi */
 <template>
-    <el-card>
-        <bread-crumb slot="header">
-            <template slot="title">发布文章</template>
-        </bread-crumb>
-        <el-form ref="publishForm" label-width="125px" :model="formData" :rules="publisthRules">
-            <el-form-item label="标题" prop="title">
-                <el-input class="article-title" v-model="formData.title"></el-input>
-            </el-form-item>
-            <el-form-item label="内容" prop="content" style="height:360px">
-                <quill-editor v-model="formData.content" style="height:260px"></quill-editor>
-            </el-form-item>
-            <el-form-item label="封面" prop="cover">
-                <el-radio-group v-model="formData.cover.type" @change="changeType">
-                    <el-radio :label="1">单图</el-radio>
-                    <el-radio :label="3">三图</el-radio>
-                    <el-radio :label="0">无图</el-radio>
-                    <el-radio :label="-1">自动</el-radio>
-                </el-radio-group>
-                <!-- 封面插件 -->
-                <cover-image :images="formData.cover.images"></cover-image>
-            </el-form-item>
-            <el-form-item label="频道" placeholder="请选择" prop="channel_id">
-                <el-select v-model="formData.channel_id">
-                    <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="publish(false)">发表</el-button>
-                <el-button @click="publish(true)">存入草稿</el-button>
-            </el-form-item>
-        </el-form>
-    </el-card>
+  <el-card>
+    <bread-crumb slot="header">
+      <template slot="title">发布文章</template>
+    </bread-crumb>
+    <el-form
+      ref="publishForm"
+      label-width="125px"
+      :model="formData"
+      :rules="publisthRules"
+      v-loading="loading"
+    >
+      <el-form-item label="标题" prop="title">
+        <el-input class="article-title" v-model="formData.title"></el-input>
+      </el-form-item>
+      <el-form-item label="内容" prop="content" style="height:360px">
+        <quill-editor v-model="formData.content" style="height:260px"></quill-editor>
+      </el-form-item>
+      <el-form-item label="封面" prop="cover">
+        <el-radio-group v-model="formData.cover.type" @change="changeType">
+          <el-radio :label="1">单图</el-radio>
+          <el-radio :label="3">三图</el-radio>
+          <el-radio :label="0">无图</el-radio>
+          <el-radio :label="-1">自动</el-radio>
+        </el-radio-group>
+        <!-- 封面插件 -->
+        <cover-image @selectImg="changeImg" :images="formData.cover.images"></cover-image>
+      </el-form-item>
+      <el-form-item label="频道" placeholder="请选择" prop="channel_id">
+        <el-select v-model="formData.channel_id">
+          <el-option v-for="item in channels" :key="item.id" :label="item.name" :value="item.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="publish(false)">发表</el-button>
+        <el-button @click="publish(true)">存入草稿</el-button>
+      </el-form-item>
+    </el-form>
+  </el-card>
 </template>
 
 <script>
@@ -38,6 +45,7 @@ export default {
   data () {
     return {
       channels: [],
+      loading: false,
       // 表单数据对象
       formData: {
         title: '',
@@ -51,11 +59,17 @@ export default {
       },
       // 发布规则
       publisthRules: {
-        title: [{
-          required: true, message: '标题不能为空'
-        }, {
-          min: 5, max: 30, message: '标题长度控制在5-30个字符之间'
-        }],
+        title: [
+          {
+            required: true,
+            message: '标题不能为空'
+          },
+          {
+            min: 5,
+            max: 30,
+            message: '标题长度控制在5-30个字符之间'
+          }
+        ],
         content: [{ required: true, message: '内容不能为空' }],
         channel_id: [{ required: true, message: '请选择频道' }]
       }
@@ -69,7 +83,7 @@ export default {
           // images 长度 1
           this.formData.cover.images = ['']
           break
-        case 3 :
+        case 3:
           this.formData.cover.images = ['', '', '']
           break
         default:
@@ -77,23 +91,34 @@ export default {
           break
       }
     },
+    changeImg (url, index) {
+      /* this.formData.cover.images = this.formData.cover.images.map((item, i) => {
+        if (index === i) {
+          return url
+        }
+        return item
+      }) */
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => index === i ? url : item)
+    },
     getChannels () {
       this.$axios({
         url: '/channels'
-      }).then((result) => {
+      }).then(result => {
         this.channels = result.data.channels
       })
     },
     // 根据文章id获取文章详情
     getArticleById (articleId) {
+      this.loading = true
       this.$axios({
         url: `/articles/${articleId}`
-      }).then((result) => {
+      }).then(result => {
         this.formData = result.data
+        this.loading = false
       })
     },
     publish (draft) {
-      this.$refs.publishForm.validate((isOK) => {
+      this.$refs.publishForm.validate(isOK => {
         if (isOK) {
           let { articleId } = this.$route.params
           this.$axios({
@@ -101,7 +126,7 @@ export default {
             method: articleId ? 'PUT' : 'POST',
             params: { draft },
             data: this.formData
-          }).then((result) => {
+          }).then(result => {
             this.$router.push('/home/articles')
           })
           /* if (articleId) {
@@ -140,7 +165,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.article-title{
-    width: 400px;
+.article-title {
+  width: 400px;
 }
 </style>

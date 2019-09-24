@@ -223,7 +223,8 @@ export default {
       font-size: 12px;
 
       span{
-        padding-left: 10px;
+        margin-left: 10px;
+        cursor: pointer;
       }
     }
   }

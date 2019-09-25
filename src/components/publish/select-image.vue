@@ -41,7 +41,6 @@ export default {
   methods: {
     //  上传用户素材
     uploadImg (params) {
-      console.log(params)
       let data = new FormData()
       data.append('image', params.file)
       this.$axios({

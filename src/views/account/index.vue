@@ -3,7 +3,7 @@
         <bread-crumb slot="header">
             <template slot="title">账户信息</template>
         </bread-crumb>
-        <el-form label-width="120px" ref="accountForm" :model="formData" :rules="accountRules">
+        <el-form label-width="120px" ref="accountForm" :model="formData" :rules="accountRules" v-loading="loading">
             <el-form-item label="用户名" prop="name">
                 <el-input v-model="formData.name" class="int-txt"></el-input>
             </el-form-item>
@@ -20,7 +20,10 @@
                 <el-button type='primary' @click="saveUser">保存信息</el-button>
             </el-form-item>
         </el-form>
-        <img class="user-img" :src="formData.photo? formData.photo : defaultImg" alt="">
+        <!-- 上传 -->
+        <el-upload action="" :show-file-list="false" :http-request="uploadPhoto">>
+          <img class="user-img" :src="formData.photo? formData.photo : defaultImg" alt="">
+        </el-upload>
     </el-card>
 </template>
 
@@ -45,6 +48,19 @@ export default {
     }
   },
   methods: {
+    uploadPhoto (params) {
+      this.loading = true
+      let data = new FormData()
+      data.append('photo', params.file)
+      this.$axios({
+        url: '/user/photo',
+        method: 'PATCH',
+        data
+      }).then(result => {
+        this.loading = false
+        this.formData.photo = result.data.photo
+      })
+    },
     saveUser () {
       this.$refs.accountForm.validate((isOK) => {
         if (isOK) {
@@ -62,9 +78,11 @@ export default {
       })
     },
     getUserInfo () {
+      this.loading = true
       this.$axios({
         url: '/user/profile'
       }).then(result => {
+        this.loading = false
         this.formData = result.data
       })
     }

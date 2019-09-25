@@ -21,13 +21,14 @@
             </el-form-item>
         </el-form>
         <!-- 上传 -->
-        <el-upload action="" :show-file-list="false" :http-request="uploadPhoto">>
+        <el-upload action="" :show-file-list="false" :http-request="uploadPhoto">
           <img class="user-img" :src="formData.photo? formData.photo : defaultImg" alt="">
         </el-upload>
     </el-card>
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -57,8 +58,10 @@ export default {
         method: 'PATCH',
         data
       }).then(result => {
-        this.loading = false
+        // 提示其他组件 更新数据
+        // eventBus.$emit('updateUserInfo')// 抛出一个事件
         this.formData.photo = result.data.photo
+        this.loading = false
       })
     },
     saveUser () {
@@ -69,6 +72,7 @@ export default {
             method: 'PATCH',
             data: this.formData
           }).then(result => {
+            eventBus.$emit('updateUserInfo')// 抛出一个事件
             this.$message({
               type: 'success',
               message: '保存成功'

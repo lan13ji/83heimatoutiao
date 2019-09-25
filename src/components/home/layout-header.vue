@@ -55,6 +55,9 @@ export default {
         this.$router.push('/login')
       }
     }
+  },
+  created () {
+    this.getUserInfo()
   }
 }
 

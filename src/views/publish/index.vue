@@ -1,4 +1,3 @@
-/* eslint-disable semi */
 <template>
   <el-card>
     <bread-crumb slot="header">
@@ -67,10 +66,11 @@ export default {
           {
             min: 5,
             max: 30,
-            message: '标题长度控制在5-30个字符之间'
+            message: '标题长度控制在5-30个字符之间',
+            trigger: 'blur'
           }
         ],
-        content: [{ required: true, message: '内容不能为空' }],
+        content: [{ required: true, message: '内容不能为空', trigger: 'blur' }],
         channel_id: [{ required: true, message: '请选择频道' }]
       }
     }

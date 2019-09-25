@@ -63,7 +63,8 @@ export default {
         // 决定校验规则， key(字段名):value(对象数组)，一个对象就是一个校验规则
         mobile: [{
           required: true, // true 表示该字段必填，如果没有内容，就会提示消息
-          message: '请输入您的手机号'
+          message: '请输入您的手机号',
+          trigger: 'blur'
         },
         {
           pattern: /^1[3456789]\d{9}$/,
@@ -72,7 +73,8 @@ export default {
         ],
         code: [{
           required: true,
-          message: '请输入您的验证码'
+          message: '请输入您的验证码',
+          trigger: 'blur'
         },
         {
           pattern: /^\d{6}$/,

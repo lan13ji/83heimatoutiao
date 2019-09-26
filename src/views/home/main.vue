@@ -1,5 +1,7 @@
 <template>
-  <div class="home"></div>
+  <div class="home">
+    <heima-date></heima-date>
+  </div>
 </template>
 
 <script>

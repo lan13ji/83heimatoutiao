@@ -9,6 +9,8 @@ import { quillEditor } from 'vue-quill-editor'
 import coverImage from './publish/cover-image'
 import selectImg from './publish/select-image'
 
+import heiMaDate from './common/date'
+
 export default {
   // 调用install的时候传入了Vue
   install: function (Vue) {
@@ -18,5 +20,6 @@ export default {
     Vue.component('quill-editor', quillEditor)
     Vue.component('cover-image', coverImage)
     Vue.component('select-image', selectImg)
+    Vue.component('heima-date', heiMaDate)
   }
 }

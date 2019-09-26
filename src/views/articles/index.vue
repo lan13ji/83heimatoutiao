@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import { getArticles, getChannels, delArticles } from '../../api/articles'
 export default {
   data () {
     return {
@@ -90,16 +91,11 @@ export default {
     goEdit (id) {
       this.$router.push(`/home/publish/${id.toString()}`)
     },
-    delArticle (id) {
+    async delArticle (id) {
       // console.log(id.toString())
-      this.$confirm('您确定删除该文章吗？').then(() => {
-        this.$axios({
-          url: `/articles/${id.toString()}`,
-          method: 'DELETE'
-        }).then(() => {
-          this.getArticles()
-        })
-      })
+      await this.$confirm('您确定删除该文章吗？')
+      await delArticles()
+      this.getArticles()
     },
     // 状态变化事件
     changeCondition () {
@@ -121,24 +117,16 @@ export default {
         page: this.page.currentPage,
         per_page: this.page.pageSize
       }
-      console.log(params)
       this.getArticles(params)
     },
-    getArticles (params) {
-      this.$axios({
-        url: '/articles',
-        params: params
-      }).then((result) => {
-        this.list = result.data.results // 获取文章列表
-        this.page.total = result.data.total_count
-      })
+    async getArticles (params) {
+      let result = await getArticles(params)
+      this.list = result.data.results // 获取文章列表
+      this.page.total = result.data.total_count
     },
-    getChannel () {
-      this.$axios({
-        url: '/channels'
-      }).then((result) => {
-        this.channels = result.data.channels
-      })
+    async getChannel () {
+      let result = await getChannels()
+      this.channels = result.data.channels
     }
   },
   created () {

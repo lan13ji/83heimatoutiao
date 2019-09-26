@@ -51,9 +51,13 @@ export default new Router({
       path: 'account',
       component: () => import('./views/account')
     }, {
-      //  用户信息路由
+      //  用户数据路由
       path: 'grapData',
       component: () => import('./views/grapData')
+    }, {
+      //  用户数据路由
+      path: 'async',
+      component: () => import('./views/async')
     }]
   },
   {

@@ -52,9 +52,9 @@ export default {
       this.getComment()
     },
     //   获取评论列表
-    getComment () {
+    async getComment () {
       this.loading = true
-      this.$axios({
+      /* this.$axios({
         url: '/articles',
         params: {
           response_type: 'comment',
@@ -65,16 +65,27 @@ export default {
         this.list = result.data.results
         this.page.total = result.data.total_count
         this.loading = false
+      }) */
+      let result = await this.$axios({
+        url: '/articles',
+        params: {
+          response_type: 'comment',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
+        } // params 是路径参数 也就是 query参数
       })
+      this.list = result.data.results
+      this.page.total = result.data.total_count
+      this.loading = false
     },
     // 类似filter 要return才有值
     fromatter (row, column, cellValue, index) {
       return cellValue ? '正常' : '关闭'
       // retrun row['comment_status'] ? '正常' : '关闭'
     },
-    closeComment (row) {
+    async closeComment (row) {
       let mess = row.comment_status ? '关闭' : '打开'
-      this.$confirm(`您确定要${mess}评论？`, {
+      /* this.$confirm(`您确定要${mess}评论？`, {
         type: 'warning'
       }).then(() => {
         this.$axios({
@@ -90,7 +101,27 @@ export default {
           // 成功后一定会进入 then
           this.getComment()
         })
-      })
+      }) */
+      try {
+        // 正常逻辑 如果正常逻辑执行时，报错了 会进入catch
+        await this.$confirm(`您确定要${mess}评论？`, {
+          type: 'warning'
+        })
+        await this.$axios({
+          url: 'comments/status',
+          method: 'put',
+          params: {
+            article_id: row.id.toString()
+          },
+          data: {
+            allow_comment: !row.comment_status
+          }
+        })
+        // 成功后一定会进入 then
+        this.getComment()
+      } catch (err) {
+
+      }
     }
   },
   created () {

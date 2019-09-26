@@ -1,7 +1,11 @@
 import router from './router'
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 // 全局前置守卫
 router.beforeEach(function (to, from, next) {
+  // 开启进度条
+  nprogress.start()
   // 判断拦截的范围
   if (to.path.startsWith('/home')) {
     // 进入拦截范围
@@ -12,5 +16,7 @@ router.beforeEach(function (to, from, next) {
     next()
   }
 })
-
+router.afterEach(function () {
+  nprogress.done()
+})
 export default router

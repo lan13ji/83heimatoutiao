@@ -46,6 +46,10 @@ export default new Router({
       //  用户信息路由
       path: 'account',
       component: () => import('./views/account')
+    }, {
+      //  用户信息路由
+      path: 'grapData',
+      component: () => import('./views/grapData')
     }]
   },
   {
